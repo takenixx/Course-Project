@@ -13,6 +13,12 @@ setwd("/Users/bamboomeat/Documents/R/Coursera/Getting and Cleaning Data/Course P
 
 # unzip(zipfile = "./data/pjdataset.zip", exdir = "./data")
 
+#-------------------------------------------------------------------------------
+#
+# start of this code
+#
+#-------------------------------------------------------------------------------
+
 pjfile_path <- file.path("./data", "UCI HAR Dataset")
 files <- list.files(pjfile_path, recursive = TRUE) 
 
@@ -52,6 +58,9 @@ dataAll <- cbind(data1, dataFeature)
 
 
 criteria1 <- names_feature$V2[grep("mean()|std()",names_feature$V2)]
+# setdiff(criteria1, grep("meanFreq()", criteria1))
+criteria1 <- criteria1[-c(grep("meanFreq()", criteria1))]
+
 # as.character(criteria1)
 criteria2 <- c("Activity","Subject",as.character(criteria1))
 dataNew <- subset(dataAll, select = criteria2) 
@@ -86,3 +95,9 @@ library(plyr)
 dataNew <- aggregate(.~Subject + Activity, dataNew, mean)
 dataNew <- dataNew[order(dataNew$Subject,dataNew$Activity),]
 write.table (dataNew, file = "tidydata.txt", row.names = FALSE)
+
+#-------------------------------------------------------------------------------
+#
+# end of this code
+#
+#-------------------------------------------------------------------------------
